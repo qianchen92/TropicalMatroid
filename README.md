@@ -1,4 +1,4 @@
-# RegidMat
+# TropicalMatroid
 
 ## GitHub configuration
 
