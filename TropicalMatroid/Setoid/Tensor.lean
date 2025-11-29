@@ -3,9 +3,9 @@ import TropicalMatroid.Setoid.Basic
 namespace TropicalMatroid
 
 variable (α β : Type*) [Fintype α] [Fintype β]
-variable [PowersetSetoid α] [PowersetSetoid β]
+variable [PowerSetoid α] [PowerSetoid β]
 
-instance : PowersetSetoid (α × β) where
+instance : PowerSetoid (α × β) where
   r := fun (p1 p2 : α × β) ↦ (p1.1 ≈ p2.1) ∧ (p1.2 ≈ p2.2)
   iseqv :={
     refl := fun p ↦ ⟨Setoid.refl p.1, Setoid.refl p.2⟩
@@ -13,24 +13,24 @@ instance : PowersetSetoid (α × β) where
     trans := fun h1 h2 ↦ ⟨Setoid.trans h1.1 h2.1, Setoid.trans h1.2 h2.2⟩
   }
   setEquiv := fun (S1 S2 : Set (α × β)) ↦
-  (PowersetSetoid.setEquiv (Prod.fst '' S1) (Prod.fst '' S2)) ∧
-    (PowersetSetoid.setEquiv (Prod.snd '' S1) (Prod.snd '' S2))
+  (PowerSetoid.setEquiv (Prod.fst '' S1) (Prod.fst '' S2)) ∧
+    (PowerSetoid.setEquiv (Prod.snd '' S1) (Prod.snd '' S2))
   setEquiv_Equiv := {
     refl := by
       intro S
       constructor
-      · exact PowersetSetoid.setEquiv_Equiv.refl (Prod.fst '' S)
-      · exact PowersetSetoid.setEquiv_Equiv.refl (Prod.snd '' S)
+      · exact PowerSetoid.setEquiv_Equiv.refl (Prod.fst '' S)
+      · exact PowerSetoid.setEquiv_Equiv.refl (Prod.snd '' S)
     symm := by
       intro S1 S2 h
       constructor
-      · exact PowersetSetoid.setEquiv_Equiv.symm h.1
-      · exact PowersetSetoid.setEquiv_Equiv.symm h.2
+      · exact PowerSetoid.setEquiv_Equiv.symm h.1
+      · exact PowerSetoid.setEquiv_Equiv.symm h.2
     trans := by
       intro S1 S2 S3 h1 h2
       constructor
-      · exact PowersetSetoid.setEquiv_Equiv.trans h1.1 h2.1
-      · exact PowersetSetoid.setEquiv_Equiv.trans h1.2 h2.2
+      · exact PowerSetoid.setEquiv_Equiv.trans h1.1 h2.1
+      · exact PowerSetoid.setEquiv_Equiv.trans h1.2 h2.2
   }
   singleton_consistency := by
     intro x y
@@ -39,33 +39,33 @@ instance : PowersetSetoid (α × β) where
       rcases h with ⟨h1, h2⟩
       rw [Set.image_singleton, Set.image_singleton] at h1
       rw [Set.image_singleton, Set.image_singleton] at h2
-      rw [PowersetSetoid.singleton_consistency] at h1
-      rw [PowersetSetoid.singleton_consistency] at h2
+      rw [PowerSetoid.singleton_consistency] at h1
+      rw [PowerSetoid.singleton_consistency] at h2
       exact ⟨h1, h2⟩
     · intro h
       rcases h with ⟨h1, h2⟩
       constructor
       · rw [Set.image_singleton, Set.image_singleton]
-        rw [PowersetSetoid.singleton_consistency]
+        rw [PowerSetoid.singleton_consistency]
         exact h1
       · rw [Set.image_singleton, Set.image_singleton]
-        rw [PowersetSetoid.singleton_consistency]
+        rw [PowerSetoid.singleton_consistency]
         exact h2
   insert_congruence := by
     intro S1 S2 x y hS hxy
     constructor
     · rcases hS with ⟨hS1,hS2⟩
       rcases hxy with ⟨hx, hy⟩
-      have h1 : PowersetSetoid.setEquiv (Prod.fst '' S1 ∪ {x.1}) (Prod.fst '' S2 ∪ {y.1}) := by
-        apply PowersetSetoid.insert_congruence
+      have h1 : PowerSetoid.setEquiv (Prod.fst '' S1 ∪ {x.1}) (Prod.fst '' S2 ∪ {y.1}) := by
+        apply PowerSetoid.insert_congruence
         · exact hS1
         · exact hx
       rw [Set.image_union, Set.image_singleton, Set.image_union, Set.image_singleton]
       exact h1
     · rcases hS with ⟨hS1,hS2⟩
       rcases hxy with ⟨hx, hy⟩
-      have h2 : PowersetSetoid.setEquiv (Prod.snd '' S1 ∪ {x.2}) (Prod.snd '' S2 ∪ {y.2}) := by
-        apply PowersetSetoid.insert_congruence
+      have h2 : PowerSetoid.setEquiv (Prod.snd '' S1 ∪ {x.2}) (Prod.snd '' S2 ∪ {y.2}) := by
+        apply PowerSetoid.insert_congruence
         · exact hS2
         · exact hy
       rw [Set.image_union, Set.image_singleton, Set.image_union, Set.image_singleton]
@@ -109,9 +109,9 @@ instance : PowersetSetoid (α × β) where
               refine ⟨u, ?_, rfl⟩
               exact ⟨hu, by intro h; rw [h] at hzx; contradiction⟩
         rw [Set.image_union, Set.image_singleton, h_eq]
-        apply PowersetSetoid.setEquiv_Equiv.symm
-        have h_ins := PowersetSetoid.insert_congruence S1 S1 x1 y1
-          (PowersetSetoid.setEquiv_Equiv.refl S1) hxy.1
+        apply PowerSetoid.setEquiv_Equiv.symm
+        have h_ins := PowerSetoid.insert_congruence S1 S1 x1 y1
+          (PowerSetoid.setEquiv_Equiv.refl S1) hxy.1
         simp only [Set.union_singleton, Set.insert_eq_of_mem hx1] at h_ins
         simp only [Set.union_singleton]
         exact h_ins
@@ -128,7 +128,7 @@ instance : PowersetSetoid (α × β) where
               exact h_eq
           · exact h_sup
         rw [Set.image_union, Set.image_singleton, h_eq]
-        apply PowersetSetoid.substitutivity
+        apply PowerSetoid.substitutivity
         · exact hx1
         · exact hxy.1
     · let S2 := Prod.snd '' S
@@ -163,9 +163,9 @@ instance : PowersetSetoid (α × β) where
               refine ⟨u, ?_, rfl⟩
               exact ⟨hu, by intro h; rw [h] at hzx; contradiction⟩
         rw [Set.image_union, Set.image_singleton, h_eq]
-        apply PowersetSetoid.setEquiv_Equiv.symm
-        have h_ins := PowersetSetoid.insert_congruence S2 S2 x2 y2
-          (PowersetSetoid.setEquiv_Equiv.refl S2) hxy.2
+        apply PowerSetoid.setEquiv_Equiv.symm
+        have h_ins := PowerSetoid.insert_congruence S2 S2 x2 y2
+          (PowerSetoid.setEquiv_Equiv.refl S2) hxy.2
         simp only [Set.union_singleton, Set.insert_eq_of_mem hx2] at h_ins
         simp only [Set.union_singleton]
         exact h_ins
@@ -182,7 +182,7 @@ instance : PowersetSetoid (α × β) where
               exact h_eq
           · exact h_sup
         rw [Set.image_union, Set.image_singleton, h_eq]
-        apply PowersetSetoid.substitutivity
+        apply PowerSetoid.substitutivity
         · exact hx2
         · exact hxy.2
 end TropicalMatroid
